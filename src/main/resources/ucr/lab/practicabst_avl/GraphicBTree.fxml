@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="602.0" prefWidth="983.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GraphicBTreeController">
+   <children>
+      <Pane fx:id="pane" layoutX="-1.0" layoutY="161.0" prefHeight="441.0" prefWidth="983.0" />
+      <Pane prefHeight="58.0" prefWidth="983.0">
+         <children>
+            <RadioButton fx:id="arbolBST" layoutX="182.0" layoutY="21.0" mnemonicParsing="false" onAction="#arbolBSTonAction" text="Árbol BST" />
+            <RadioButton fx:id="arbolAVL" layoutX="492.0" layoutY="21.0" mnemonicParsing="false" onAction="#arbolAVLonAction" text="Árbol AVL" />
+         </children></Pane>
+      <Pane layoutY="62.0" prefHeight="98.0" prefWidth="983.0">
+         <children>
+            <Button layoutX="316.0" layoutY="4.0" onAction="#levelsOnAction" prefHeight="25.0" prefWidth="118.0" text="Levels" />
+            <Button layoutX="600.0" layoutY="4.0" onAction="#RandomizeButton" prefHeight="25.0" prefWidth="188.0" text="Randomize" />
+            <Button layoutX="26.0" layoutY="3.0" onAction="#tour" prefHeight="25.0" prefWidth="118.0" text="Tour" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
