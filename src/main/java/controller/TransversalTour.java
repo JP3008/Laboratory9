@@ -4,6 +4,7 @@ import domain.BST;
 import domain.BTreeNode;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -18,6 +19,10 @@ public class TransversalTour
     private BST bTree;
 
     private Alert alert = new Alert(Alert.AlertType.ERROR);
+    @javafx.fxml.FXML
+    private TextField textFieldArbolAVL;
+    @javafx.fxml.FXML
+    private TextField textFieldArbolBST;
 
     @javafx.fxml.FXML
     public void initialize() {
@@ -213,5 +218,12 @@ public class TransversalTour
     }
 
 
+    @javafx.fxml.FXML
+    public void arbolBST(ActionEvent actionEvent) {
+    }
+
+    @javafx.fxml.FXML
+    public void arbolAVL(ActionEvent actionEvent) {
+    }
 }
 

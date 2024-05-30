@@ -6,10 +6,10 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="603.0" prefWidth="1307.0" style="-fx-background-color: #d7b1d7;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TransversalTour">
+<AnchorPane prefHeight="603.0" prefWidth="1307.0" style="-fx-background-color: #D6A46B;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TransversalTour">
    <children>
-      <Pane fx:id="pane" layoutX="-1.0" layoutY="161.0" prefHeight="441.0" prefWidth="983.0" />
-      <Pane prefHeight="58.0" prefWidth="1307.0" style="-fx-background-color: #d68be6;">
+      <Pane fx:id="pane" layoutX="-1.0" layoutY="207.0" prefHeight="397.0" prefWidth="1082.0" />
+      <Pane prefHeight="58.0" prefWidth="1307.0" style="-fx-background-color: #F05F1C;">
          <children>
             <Label layoutX="353.0" layoutY="11.0" text="Transversal Tour">
                <font>
@@ -17,7 +17,7 @@
                </font>
             </Label>
          </children></Pane>
-      <Pane layoutY="62.0" prefHeight="98.0" prefWidth="983.0">
+      <Pane layoutY="62.0" prefHeight="141.0" prefWidth="1322.0">
          <children>
             <Button layoutX="14.0" layoutY="13.0" mnemonicParsing="false" onAction="#RandomizeButton" prefHeight="25.0" prefWidth="180.0" text="Randomize">
                <font>
@@ -26,7 +26,7 @@
                <effect>
                   <InnerShadow>
                      <color>
-                        <Color red="0.40392157435417175" green="0.14509804546833038" blue="0.4156862795352936" />
+                        <Color red="0.9411764740943909" green="0.37254902720451355" blue="0.10980392247438431" />
                      </color>
                   </InnerShadow>
                </effect></Button>
@@ -37,7 +37,7 @@
                <effect>
                   <InnerShadow>
                      <color>
-                        <Color red="0.40392157435417175" green="0.14509804546833038" blue="0.4156862795352936" />
+                        <Color red="0.9411764740943909" green="0.37254902720451355" blue="0.10980392247438431" />
                      </color>
                   </InnerShadow>
                </effect></Button>
@@ -48,7 +48,7 @@
                <effect>
                   <InnerShadow>
                      <color>
-                        <Color red="0.40392157435417175" green="0.14509804546833038" blue="0.4156862795352936" />
+                        <Color red="0.9411764740943909" green="0.37254902720451355" blue="0.10980392247438431" />
                      </color>
                   </InnerShadow>
                </effect></Button>
@@ -59,10 +59,21 @@
                <effect>
                   <InnerShadow>
                      <color>
-                        <Color red="0.40392157435417175" green="0.14509804546833038" blue="0.4156862795352936" />
+                        <Color red="0.9411764740943909" green="0.37254902720451355" blue="0.10980392247438431" />
                      </color>
                   </InnerShadow>
                </effect></Button>
+            <RadioButton layoutX="33.0" layoutY="102.0" mnemonicParsing="false" onAction="#arbolBST" text="Árbol BST">
+               <font>
+                  <Font name="Century Gothic" size="19.0" />
+               </font></RadioButton>
+            <RadioButton layoutX="231.0" layoutY="102.0" mnemonicParsing="false" onAction="#arbolAVL" text="Árbol AVL">
+               <font>
+                  <Font name="Century Gothic" size="19.0" />
+               </font>
+            </RadioButton>
+            <TextField fx:id="textFieldArbolBST" layoutX="912.0" layoutY="23.0" prefHeight="25.0" prefWidth="246.0" style="-fx-background-color: transparent;" />
+            <TextField fx:id="textFieldArbolAVL" layoutX="33.0" layoutY="67.0" prefHeight="25.0" prefWidth="246.0" style="-fx-background-color: transparent;" />
          </children>
       </Pane>
    </children>
