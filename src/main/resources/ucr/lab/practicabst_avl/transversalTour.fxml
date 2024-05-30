@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="603.0" prefWidth="1307.0" style="-fx-background-color: #d7b1d7;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TransversalTour">
+   <children>
+      <Pane fx:id="pane" layoutX="-1.0" layoutY="161.0" prefHeight="441.0" prefWidth="983.0" />
+      <Pane prefHeight="58.0" prefWidth="1307.0" style="-fx-background-color: #d68be6;">
+         <children>
+            <Label layoutX="353.0" layoutY="11.0" text="Transversal Tour">
+               <font>
+                  <Font name="Century Gothic" size="33.0" />
+               </font>
+            </Label>
+         </children></Pane>
+      <Pane layoutY="62.0" prefHeight="98.0" prefWidth="983.0">
+         <children>
+            <Button layoutX="14.0" layoutY="13.0" mnemonicParsing="false" onAction="#RandomizeButton" prefHeight="25.0" prefWidth="180.0" text="Randomize">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+               <effect>
+                  <InnerShadow>
+                     <color>
+                        <Color red="0.40392157435417175" green="0.14509804546833038" blue="0.4156862795352936" />
+                     </color>
+                  </InnerShadow>
+               </effect></Button>
+            <Button layoutX="584.0" layoutY="13.0" mnemonicParsing="false" onAction="#postOrderOnAction" prefHeight="25.0" prefWidth="180.0" text="Post Order">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+               <effect>
+                  <InnerShadow>
+                     <color>
+                        <Color red="0.40392157435417175" green="0.14509804546833038" blue="0.4156862795352936" />
+                     </color>
+                  </InnerShadow>
+               </effect></Button>
+            <Button layoutX="203.0" layoutY="13.0" mnemonicParsing="false" onAction="#preOrderOnAction" prefHeight="25.0" prefWidth="180.0" text="Pre Order">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+               <effect>
+                  <InnerShadow>
+                     <color>
+                        <Color red="0.40392157435417175" green="0.14509804546833038" blue="0.4156862795352936" />
+                     </color>
+                  </InnerShadow>
+               </effect></Button>
+            <Button layoutX="393.0" layoutY="13.0" mnemonicParsing="false" onAction="#inOrderOnAction" prefHeight="25.0" prefWidth="180.0" text="In Order">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+               <effect>
+                  <InnerShadow>
+                     <color>
+                        <Color red="0.40392157435417175" green="0.14509804546833038" blue="0.4156862795352936" />
+                     </color>
+                  </InnerShadow>
+               </effect></Button>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

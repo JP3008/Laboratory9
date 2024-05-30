@@ -2,21 +2,28 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="bp" prefHeight="694.0" prefWidth="1462.0" style="-fx-background-color: #6e9987;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HelloController">
+<BorderPane fx:id="bp" prefHeight="694.0" prefWidth="1462.0" style="-fx-background-color: #EB2551;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HelloController">
    <center>
       <AnchorPane fx:id="ap" prefHeight="635.0" prefWidth="535.0">
          <children>
-            <Text fx:id="messageText" fill="WHITE" layoutX="482.0" layoutY="362.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Laboratory 8">
+            <Text fx:id="messageText" fill="WHITE" layoutX="448.0" layoutY="214.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Laboratory 9">
                <font>
-                  <Font name="Arial" size="40.0" />
+                  <Font name="Century Gothic" size="45.0" />
                </font>
             </Text>
+            <ImageView fitHeight="243.0" fitWidth="261.0" layoutX="464.0" layoutY="271.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Icono%20lab9.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
    </center>
