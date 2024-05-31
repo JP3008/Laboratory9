@@ -70,43 +70,40 @@ public class AVL implements Tree {
     }
 
     private BTreeNode add(BTreeNode node, Object element, String sequence) {
-        if (node == null) { // si el árbol está vacío
-            node = new BTreeNode(element, "Added as " + sequence);
+        if (node == null) {
+            node = new BTreeNode(element, sequence);
         } else {
-            if (Utility.compare(element, node.data) < 0) // si es par inserte por la izq
+            if (Utility.compare(element, node.data) < 0)
                 node.left = add(node.left, element, sequence + "/left");
-            else if (Utility.compare(element, node.data) > 0)// si es impar inserte por la der
+            else if (Utility.compare(element, node.data) > 0)
                 node.right = add(node.right, element, sequence + "/right");
+
         }
-        //se determina si se requiere re-balanceo
+
         node = reBalance(node, element);
         return node;
     }
 
     private BTreeNode reBalance(BTreeNode node, Object element) {
+        if (node == null) return node; // Si el nodo es nulo, no hay nada que reequilibrar
+
         int balance = getBalanceFactor(node);
 
-        //Left-Left Case
-        if (balance > 1 && Utility.compare(element, node.data) <0){
+        // Casos de rotación
+        if (balance > 1 && Utility.compare(element, node.left.data) < 0) {
             node.path += ". Singly Right Rotation";
             return rightRotate(node);
         }
-
-        //Right-Right Case
-        if (balance < -1 && Utility.compare(element, node.data) >0){
+        if (balance < -1 && Utility.compare(element, node.right.data) > 0) {
             node.path += ". Singly Left Rotation";
             return leftRotate(node);
         }
-
-        //Left-Right Case
-        if (balance > 1 && Utility.compare(element, node.data) >0){
+        if (balance > 1 && Utility.compare(element, node.left.data) > 0) {
             node.path += ". Double Left/Right Rotation";
             node.left = leftRotate(node.left);
             return rightRotate(node);
         }
-
-        //Right-Left Case
-        if (balance < -1 && Utility.compare(element, node.data) <0){
+        if (balance < -1 && Utility.compare(element, node.right.data) < 0) {
             node.path += ". Double Right/Left Rotation";
             node.right = rightRotate(node.right);
             return leftRotate(node);
@@ -114,20 +111,30 @@ public class AVL implements Tree {
         return node;
     }
 
+
     private BTreeNode leftRotate(BTreeNode node) {
+        if (node == null || node.right == null) return node; // Manejo de nodos nulos
         BTreeNode node1 = node.right;
         BTreeNode node2 = node1.left;
-        //se realiza la rotacion (perform rotation)
+
         node1.left = node;
         node.right = node2;
+
+        node.height = Math.max(height(node.left), height(node.right)) + 1;
+        node1.height = Math.max(height(node1.left), height(node1.right)) + 1;
         return node1;
     }
+
     private BTreeNode rightRotate(BTreeNode node) {
+        if (node == null || node.left == null) return node; // Manejo de nodos nulos
         BTreeNode node1 = node.left;
         BTreeNode node2 = node1.right;
-        //se realiza la rotacion (perform rotation)
+        
         node1.right = node;
         node.left = node2;
+
+        node.height = Math.max(height(node.left), height(node.right)) + 1;
+        node1.height = Math.max(height(node1.left), height(node1.right)) + 1;
         return node1;
     }
 
