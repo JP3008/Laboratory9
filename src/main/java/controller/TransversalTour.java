@@ -1,40 +1,64 @@
 package controller;
 
+import Util.Utility;
+import domain.AVLBST;
 import domain.BST;
 import domain.BTreeNode;
-import javafx.event.ActionEvent;
+import domain.TreeException;
+import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import javafx.event.ActionEvent;
 
-public class TransversalTour
-{
-    @javafx.fxml.FXML
+public class TransversalTour {
+    @FXML
     private Pane pane;
 
-    private BST bTree;
+    private BST bst;
+    private AVLBST avlbst;
 
     private Alert alert = new Alert(Alert.AlertType.ERROR);
-    @javafx.fxml.FXML
+    @FXML
     private TextField textFieldArbolAVL;
-    @javafx.fxml.FXML
+    @FXML
     private TextField textFieldArbolBST;
+    @FXML
+    private RadioButton arbolBST;
+    @FXML
+    private RadioButton arbolAVL;
 
-    @javafx.fxml.FXML
+    private ToggleGroup treeToggleGroup;
+
+    private static final int NODE_RADIUS = 20;
+    private static final int VERTICAL_GAP = 100;
+
+    @FXML
     public void initialize() {
-        bTree = new BST();
+        bst = new BST();
+
+        treeToggleGroup = new ToggleGroup();
+        arbolBST.setToggleGroup(treeToggleGroup);
+        arbolAVL.setToggleGroup(treeToggleGroup);
     }
 
     private void drawTree() {
         pane.getChildren().clear(); // limpia el panel antes de dibujar otro arbol
 
         double paneWidth = pane.getWidth();
-        drawTreeRecursively(bTree.getRoot(), paneWidth / 2, NODE_RADIUS * 2, paneWidth / 4);
+        if (arbolBST.isSelected()) {
+            drawTreeRecursively(bst.getRoot(), paneWidth / 2, NODE_RADIUS * 2, paneWidth / 4);
+        } else if (arbolAVL.isSelected()) {
+            drawTreeRecursively(avlbst.getRoot(), paneWidth / 2, NODE_RADIUS * 2, paneWidth / 4);
+        }
     }
+
     private void drawTreeRecursively(BTreeNode node, double x, double y, double hGap) {
         if (node == null) {
             return;
@@ -45,9 +69,8 @@ public class TransversalTour
         circle.setStroke(Color.BLACK);
 
         Text text = new Text(x - 4, y + 4, node.data.toString());
-        //Text textTour = new Text(x - 30, y + 40, node.data.toString());
 
-        pane.getChildren().addAll(circle, text); //textTour);
+        pane.getChildren().addAll(circle, text);
 
         if (node.left != null) {
             double childX = x - hGap;
@@ -55,7 +78,7 @@ public class TransversalTour
 
             Line line = new Line(x, y + NODE_RADIUS, childX, childY - NODE_RADIUS);
             pane.getChildren().add(line);
-            drawTreeRecursively(node.left, childX, childY-35, hGap / 2);
+            drawTreeRecursively(node.left, childX, childY - 35, hGap / 2);
         }
 
         if (node.right != null) {
@@ -64,30 +87,41 @@ public class TransversalTour
 
             Line line = new Line(x, y + NODE_RADIUS, childX, childY - NODE_RADIUS);
             pane.getChildren().add(line);
-            drawTreeRecursively(node.right, childX, childY-35, hGap / 2);
+            drawTreeRecursively(node.right, childX, childY - 35, hGap / 2);
         }
     }
 
-    private static final int NODE_RADIUS = 20;
-    private static final int VERTICAL_GAP = 100;
-
-    @javafx.fxml.FXML
-    public void RandomizeButton(ActionEvent actionEvent) {
-        bTree = new BST();
-        int numberOfNodes = Util.Utility.getRandom(24) + 8;
-        for (int i = 0; i < numberOfNodes; i++) {
-            bTree.add(Util.Utility.getRandom(100)); // Usando valores aleatorios entre 0 y 99
+    @FXML
+    public void RandomizeButton(ActionEvent actionEvent) throws TreeException {
+        if (arbolBST.isSelected()) {
+            bst = new BST();
+            int numberOfNodes = Utility.getRandom(24);
+            for (int i = 0; i < numberOfNodes; i++) {
+                bst.add(Utility.getRandom(100)); // Usando valores aleatorios entre 0 y 99
+            }
+            drawTree();
+        } else if (arbolAVL.isSelected()) {
+            avlbst = new AVLBST();
+            int numberOfNodes = Utility.getRandom(24);
+            for (int i = 0; i < numberOfNodes; i++) {
+                avlbst.add(Utility.getRandom(100)); // Usando valores aleatorios entre 0 y 99
+            }
+            drawTree();
         }
-        drawTree();
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void preOrderOnAction(ActionEvent actionEvent) {
         pane.getChildren().clear(); // Limpia el panel antes de dibujar otro árbol
         double paneWidth = pane.getWidth();
         int[] counter = new int[1]; // Arreglo de un solo elemento para mantener el contador
-        counter[0] = 1; // Ponemos el contador en 1 para el primer nodo, por que por defecto en Java lo tira en 0
-        drawTreeRecursivelyPreOrder(bTree.getRoot(), paneWidth / 2, 2 * NODE_RADIUS, paneWidth / 4, counter);
+        counter[0] = 1; // Ponemos el contador en 1 para el primer nodo, porque por defecto en Java lo tira en 0
+
+        if (arbolBST.isSelected()) {
+            drawTreeRecursivelyPreOrder(bst.getRoot(), paneWidth / 2, 2 * NODE_RADIUS, paneWidth / 4, counter);
+        } else if (arbolAVL.isSelected()) {
+            drawTreeRecursivelyPreOrder(avlbst.getRoot(), paneWidth / 2, 2 * NODE_RADIUS, paneWidth / 4, counter);
+        }
     }
 
     private void drawTreeRecursivelyPreOrder(BTreeNode node, double x, double y, double hGap, int[] counter) {
@@ -126,14 +160,19 @@ public class TransversalTour
         }
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void postOrderOnAction(ActionEvent actionEvent) {
-        if (bTree != null) {
+        if (bst != null || avlbst != null) {
             pane.getChildren().clear();
             double paneWidth = pane.getWidth();
             int[] counter = {1}; // contador para nodos visitados
-            drawTreeRecursivelyPostOrder(bTree.getRoot(), paneWidth / 2, 2 * NODE_RADIUS, paneWidth / 4, counter);
-       }
+
+            if (arbolBST.isSelected()) {
+                drawTreeRecursivelyPostOrder(bst.getRoot(), paneWidth / 2, 2 * NODE_RADIUS, paneWidth / 4, counter);
+            } else if (arbolAVL.isSelected()) {
+                drawTreeRecursivelyPostOrder(avlbst.getRoot(), paneWidth / 2, 2 * NODE_RADIUS, paneWidth / 4, counter);
+            }
+        }
     }
 
     private void drawTreeRecursivelyPostOrder(BTreeNode node, double x, double y, double hGap, int[] counter) {
@@ -164,19 +203,25 @@ public class TransversalTour
             pane.getChildren().add(lineLeft);
         }
 
-        // Ponee línea desde el nodo hasta su hijo derecho
+        // Pone línea desde el nodo hasta su hijo derecho
         if (node.right != null) {
             Line lineRight = new Line(x, y + NODE_RADIUS, x + hGap, y + VERTICAL_GAP - NODE_RADIUS);
             pane.getChildren().add(lineRight);
         }
     }
-    @javafx.fxml.FXML
+
+    @FXML
     public void inOrderOnAction(ActionEvent actionEvent) {
-        if (bTree != null) {
+        if (bst != null || avlbst != null) {
             pane.getChildren().clear(); // Limpia el panel antes de dibujar otro árbol
             double paneWidth = pane.getWidth();
             int[] counter = {1}; // ve los nodos visitados
-            drawTreeRecursivelyInOrder(bTree.getRoot(), paneWidth / 2, 2 * NODE_RADIUS, paneWidth / 4, counter);
+
+            if (arbolBST.isSelected()) {
+                drawTreeRecursivelyInOrder(bst.getRoot(), paneWidth / 2, 2 * NODE_RADIUS, paneWidth / 4, counter);
+            } else if (arbolAVL.isSelected()) {
+                drawTreeRecursivelyInOrder(avlbst.getRoot(), paneWidth / 2, 2 * NODE_RADIUS, paneWidth / 4, counter);
+            }
         }
     }
 
@@ -216,14 +261,7 @@ public class TransversalTour
         // Pone el hijo derecho después (inorden)
         drawTreeRecursivelyInOrder(node.right, x + hGap, y + VERTICAL_GAP, hGap / 2, counter);
     }
-
-
-    @javafx.fxml.FXML
-    public void arbolBST(ActionEvent actionEvent) {
-    }
-
-    @javafx.fxml.FXML
-    public void arbolAVL(ActionEvent actionEvent) {
-    }
 }
+
+
 
