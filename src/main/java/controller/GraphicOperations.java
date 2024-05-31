@@ -49,7 +49,7 @@ public class GraphicOperations
         if (radioBST.isSelected()) {
             lbBalance.setText("");
             for (int i = 0; i < 19; i++) {
-                bst.add(Utility.getRandom(100)); // Usando valores aleatorios entre 0 y 99
+                bst.add( Utility.getRandom(100)); // Usando valores aleatorios entre 0 y 99
             }
             if (bst.isBalanced()){
                 lbBalance.setText("BTS is balanced!!!");
@@ -60,7 +60,15 @@ public class GraphicOperations
         }else if (radioAVL.isSelected()) {
             lbBalance.setText("");
             for (int i = 0; i < 19; i++) {
-                avl.add(Utility.getRandom(100)); // Usando valores aleatorios entre 0 y 99
+                int randomValue = Utility.getRandom(100);
+                if (i ==0) {
+                    avl.add(randomValue); // Usando valores aleatorios entre 0 y 99
+                }
+                if (avl.contains(randomValue) && i!=0){
+                    i--;
+                }else{
+                    avl.add(randomValue);
+                }
             }
             if (avl.isBalanced()){
                 lbBalance.setText("AVL is balanced!!!");
@@ -252,9 +260,10 @@ public class GraphicOperations
                     lbBalance.setText("");
                     int eliminateValueAVL;
                     try {
-                        do {
+                        eliminateValueAVL = util.Utility.getRandom(100);
+                        while (!avl.contains(eliminateValueAVL)){
                             eliminateValueAVL = util.Utility.getRandom(100);
-                        } while (avl.contains(eliminateValueAVL));
+                        }
                         avl.remove(eliminateValueAVL);
                         drawTree();
                     } catch (TreeException e) {
@@ -275,7 +284,7 @@ public class GraphicOperations
     }
 
     @javafx.fxml.FXML
-    public void addOnAction(ActionEvent actionEvent) {
+    public void addOnAction(ActionEvent actionEvent) throws TreeException {
         if (radioBST.isSelected()) {
             lbBalance.setText("");
             bst.add(Utility.getRandom(100));
@@ -287,7 +296,11 @@ public class GraphicOperations
             drawTree();
         }else if (radioAVL.isSelected()) {
             lbBalance.setText("");
-            avl.add(Utility.getRandom(100));
+            int randomValue = Utility.getRandom(100);
+            while (avl.contains(randomValue)){
+                randomValue = Utility.getRandom(100);
+            }
+            avl.add(randomValue);
             if (avl.isBalanced()){
                 lbBalance.setText("AVL is balanced!!!");
             }else{
