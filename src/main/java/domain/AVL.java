@@ -1,30 +1,35 @@
 package domain;
 
+import domain.BTreeNode;
+import domain.Tree;
+import domain.TreeException;
+import util.Utility;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class BST implements Tree {
+public class AVL implements Tree {
     public BTreeNode getRoot() {
         return root;
     }
 
     private BTreeNode root; //unica entrada al arbol
 
-    public BST(){
+    public AVL(){
         this.root = null;
     }
 
     @Override
     public int size() throws TreeException {
         if(isEmpty()){
-            throw new TreeException("Binary Search Tree is empty");
+            throw new TreeException("AVL Binary Search Tree is empty");
         }
         return size(root);
     }
 
     private int size(BTreeNode node){
         if(node==null)
-            return 0;
+            return -1;
         else
             return 1+size(node.left)+size(node.right);
     }
@@ -42,7 +47,7 @@ public class BST implements Tree {
     @Override
     public boolean contains(Object element) throws TreeException {
         if(isEmpty()){
-            throw new TreeException("Binary Search Tree is empty");
+            throw new TreeException("AVL Binary Search Tree is empty");
         }
         return binarySearch(root, element);
     }
@@ -52,47 +57,100 @@ public class BST implements Tree {
         if(node==null)
             return false;
         else
-        if(util.Utility.compare(node.data, element)==0)
+        if(Utility.compare(node.data, element)==0)
             return true; //ya lo encontro
-        else if (util.Utility.compare(element, node.data)<0)
+        else if (Utility.compare(element, node.data)<0)
             return binarySearch(node.left, element);
         else return binarySearch(node.right, element);
     }
 
     @Override
     public void add(Object element) {
-        this.root = add(root, element);
+        this.root = add(root, element, "root");
     }
 
-    private BTreeNode add(BTreeNode node, Object element) {
+    private BTreeNode add(BTreeNode node, Object element, String sequence) {
         if (node == null) { // si el árbol está vacío
-            node = new BTreeNode(element);
+            node = new BTreeNode(element, "Added as " + sequence);
         } else {
-            // debemos establecer algún criterio de inserción
-            int value = util.Utility.getRandom(10);
-            if (util.Utility.compare(element, node.data) < 0) // si es par inserte por la izq
-                node.left = add(node.left, element);
-            else if (util.Utility.compare(element, node.data) > 0)// si es impar inserte por la der
-                node.right = add(node.right, element);
+            if (Utility.compare(element, node.data) < 0) // si es par inserte por la izq
+                node.left = add(node.left, element, sequence + "/left");
+            else if (Utility.compare(element, node.data) > 0)// si es impar inserte por la der
+                node.right = add(node.right, element, sequence + "/right");
+        }
+        //se determina si se requiere re-balanceo
+        node = reBalance(node, element);
+        return node;
+    }
+
+    private BTreeNode reBalance(BTreeNode node, Object element) {
+        int balance = getBalanceFactor(node);
+
+        //Left-Left Case
+        if (balance > 1 && Utility.compare(element, node.data) <0){
+            node.path += ". Singly Right Rotation";
+            return rightRotate(node);
+        }
+
+        //Right-Right Case
+        if (balance < -1 && Utility.compare(element, node.data) >0){
+            node.path += ". Singly Left Rotation";
+            return leftRotate(node);
+        }
+
+        //Left-Right Case
+        if (balance > 1 && Utility.compare(element, node.data) >0){
+            node.path += ". Double Left/Right Rotation";
+            node.left = leftRotate(node.left);
+            return rightRotate(node);
+        }
+
+        //Right-Left Case
+        if (balance < -1 && Utility.compare(element, node.data) <0){
+            node.path += ". Double Right/Left Rotation";
+            node.right = rightRotate(node.right);
+            return leftRotate(node);
         }
         return node;
+    }
+
+    private BTreeNode leftRotate(BTreeNode node) {
+        BTreeNode node1 = node.right;
+        BTreeNode node2 = node1.left;
+        //se realiza la rotacion (perform rotation)
+        node1.left = node;
+        node.right = node2;
+        return node1;
+    }
+    private BTreeNode rightRotate(BTreeNode node) {
+        BTreeNode node1 = node.left;
+        BTreeNode node2 = node1.right;
+        //se realiza la rotacion (perform rotation)
+        node1.right = node;
+        node.left = node2;
+        return node1;
+    }
+
+    private int getBalanceFactor(BTreeNode node) {
+        if (node == null) return 0;
+        else return height(node.left) - height(node.right);
     }
 
     @Override
     public void remove(Object element) throws TreeException {
         if(isEmpty())
-            throw new TreeException("Binary Search Tree is empty");
+            throw new TreeException("AVL Binary Search Tree is empty");
         root = remove(root,element);
     }
 
     private BTreeNode remove(BTreeNode node, Object element){
         if(node != null) {
 
-            if (util.Utility.compare(element, node.data)<0)
+            if (Utility.compare(element, node.data)<0)
                 node.left = remove(node.left, element);
-            else if(util.Utility.compare(element, node.data) >0)
+            else if(Utility.compare(element, node.data) >0)
                 node.right = remove(node.right, element);
-            else if (util.Utility.compare(node.data, element) == 0) {
+            else if (Utility.compare(node.data, element) == 0) {
 
                 //Caso 1. Si es una hoja (osea nodo sin hijos)
                 if (node.left == null && node.right == null) {
@@ -105,6 +163,7 @@ public class BST implements Tree {
                 }
                 //Caso 2. El nodo solo tiene un hijo
                 else if (node.left != null && node.right == null) {
+                    node.left = newPath(node.left, node.path);
                     return node.left;
                 } else
                     //Caso 3. El nodo tiene dos hijos
@@ -113,15 +172,15 @@ public class BST implements Tree {
                         node.data = value;
                         node.right = remove(node.right, value);
                     }
-
             }
+            node = reBalance(node, element);
         }
         return node;
     }
 
     public List<BTreeNode> getLeaves() throws TreeException {
         if (isEmpty()) {
-            throw new TreeException("Binary Search Tree is empty");
+            throw new TreeException("AVL Binary Search Tree is empty");
         }
         List<BTreeNode> leaves = new ArrayList<>();
         getLeaves(root, leaves);
@@ -148,15 +207,15 @@ public class BST implements Tree {
     @Override
     public int height(Object element) throws TreeException {
         if(isEmpty()){
-            throw new TreeException("Binary Search Tree is empty");
+            throw new TreeException("AVL Binary Search Tree is empty");
         }
         return height(root, element, 0);
     }
 
     private int height(BTreeNode node, Object element, int counter){
         if (node == null) return 0; //significa que el elemento no existe
-        else if (util.Utility.compare(node.data, element) == 0) return counter;
-        else if (util.Utility.compare(element, node.data)<0)
+        else if (Utility.compare(node.data, element) == 0) return counter;
+        else if (Utility.compare(element, node.data)<0)
             return height(node.left, element, ++counter);
         else return height(node.right, element, ++counter);
         //else return Math.max(height(node.left, element, ++counter), height(node.right, element, counter));
@@ -165,7 +224,7 @@ public class BST implements Tree {
     @Override
     public int height() throws TreeException {
         if(isEmpty())
-            throw new TreeException("Binary Search Tree is empty");
+            throw new TreeException("AVL Binary Search Tree is empty");
         return height(root)-1;
     }
 
@@ -177,7 +236,7 @@ public class BST implements Tree {
     @Override
     public Object min() throws TreeException {
         if(isEmpty())
-            throw new TreeException("Binary Search Tree is empty");
+            throw new TreeException("AVL Binary Search Tree is empty");
         return min(root);
     }
 
@@ -190,7 +249,7 @@ public class BST implements Tree {
     @Override
     public Object max() throws TreeException {
         if(isEmpty())
-            throw new TreeException("Binary Search Tree is empty");
+            throw new TreeException("AVL Binary Search Tree is empty");
         return max(root);
     }
 
@@ -203,7 +262,7 @@ public class BST implements Tree {
     @Override
     public String preOrder() throws TreeException {
         if(isEmpty()){
-            throw new TreeException("Binary Search Tree is empty");
+            throw new TreeException("AVL Binary Search Tree is empty");
         }
         return preOrder(root)+"\n";
     }
@@ -222,7 +281,7 @@ public class BST implements Tree {
     @Override
     public String inOrder() throws TreeException {
         if(isEmpty()){
-            throw new TreeException("Binary Search Tree is empty");
+            throw new TreeException("AVL Binary Search Tree is empty");
         }
         return inOrder(root)+"\n";
     }
@@ -241,7 +300,7 @@ public class BST implements Tree {
     @Override
     public String postOrder() throws TreeException {
         if (isEmpty()) {
-            throw new TreeException("Binary Search Tree is empty");
+            throw new TreeException("AVL Binary Search Tree is empty");
         }
         return postOrder(root) + "\n";
     }
@@ -260,7 +319,7 @@ public class BST implements Tree {
 
     public String preOrderWithoutPath() throws TreeException {
         if(isEmpty()){
-            throw new TreeException("Binary Search Tree is empty");
+            throw new TreeException("AVL Binary Search Tree is empty");
         }
         return preorderWithoutPath(root)+"\n";
     }
@@ -295,12 +354,44 @@ public class BST implements Tree {
     @Override
     public String toString() {
         if(isEmpty())
-            return "Binary Search Tree is empty";
-        String result = "BINARY SEARCH TREE TOUR...\n";
+            return "AVL Binary Search Tree is empty";
+        String result = "AVL BINARY SEARCH TREE TOUR...\n";
         result+="PreOrder: "+preOrder(root)+"\n";
         result+="InOrder: "+inOrder(root)+"\n";
         result+="PostOrder: "+postOrder(root)+"\n";
         return result;
+    }
+
+    public String getSequence() {
+        return getInternalSequence(root);
+    }
+    private String getInternalSequence(BTreeNode node){
+        String result="";
+        if(node!=null){
+            result =  node.data + " "+ node.path + "\n";
+            result += getInternalSequence(node.left);
+            result += getInternalSequence(node.right);
+        }
+        return result;
+    }
+
+    public String getSequence(Object object) throws TreeException {
+        BTreeNode currentNode = null;
+        if (contains(object)) {
+            currentNode = getNodeByValue(object, root);
+        }
+        return getInternalSequence(currentNode);
+    }
+
+    private BTreeNode getNodeByValue(Object element, BTreeNode node){
+        if(element==null)
+            return null;
+        else
+        if(Utility.compare(node.data, element)==0)
+            return node; //ya lo encontro
+        else if (Utility.compare(element, node.data) < 0)
+            return getNodeByValue(element, node.left);
+        else return getNodeByValue(element, node.right);
     }
 
     public boolean isBalanced(){

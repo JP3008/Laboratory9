@@ -1,16 +1,15 @@
 package controller;
 
-import Util.Utility;
-import domain.AVLBST;
+import domain.AVL;
+import util.Utility;
+//import domain.AVLBST;
 import domain.BST;
 import domain.BTreeNode;
 import domain.TreeException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -23,7 +22,7 @@ public class GraphicBTreeController {
     @FXML
     private Pane pane;
 
-    private AVLBST avlbst;
+    private AVL avlbst;
     private BST bst;
     private Alert alert = new Alert(Alert.AlertType.ERROR);
     @FXML
@@ -61,7 +60,7 @@ public class GraphicBTreeController {
             drawTree();
         }
         if (arbolAVL.isSelected()) {
-            avlbst = new AVLBST();
+            avlbst = new AVL();
             int numberOfNodes = Utility.getRandom(24);
             for (int i = 0; i < numberOfNodes; i++) {
                 avlbst.add(Utility.getRandom(100)); // Usando valores aleatorios entre 0 y 99
@@ -244,16 +243,9 @@ public class GraphicBTreeController {
             alert.setContentText("The tree is empty");
             alert.showAndWait();
         }else{
-            try {
-                Alert alertTreeTour = new Alert(Alert.AlertType.INFORMATION);
-                alertTreeTour.setContentText(avlbst.BtreeTour() + "\n" + "\n"
-                        + avlbst.inOrder() + "\n" + "\n"
-                        + avlbst.postOrder());
-                alertTreeTour.showAndWait();
-            }catch (TreeException tE){
-                alert.setContentText("The tree is empty");
-                alert.showAndWait();
-            }
+            Alert alertTreeTour = new Alert(Alert.AlertType.INFORMATION);
+            alertTreeTour.setContentText(avlbst.toString());
+            alertTreeTour.showAndWait();
         }
     }
 
