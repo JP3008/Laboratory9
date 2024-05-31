@@ -33,21 +33,21 @@ public class TransversalTour {
     private RadioButton arbolBST;
     @FXML
     private RadioButton arbolAVL;
-
-    private ToggleGroup treeToggleGroup;
+    @FXML
+    private Text textRecorrido;
 
     private static final int NODE_RADIUS = 20;
     private static final int VERTICAL_GAP = 100;
-    @FXML
-    private Text textRecorrido;
+    private ToggleGroup seleccionUnaVez;
 
     @FXML
     public void initialize() {
         bst = new BST();
 
-        treeToggleGroup = new ToggleGroup();
-        arbolBST.setToggleGroup(treeToggleGroup);
-        arbolAVL.setToggleGroup(treeToggleGroup);
+        //ToggleGroup garantiza que solo se pueda seleccionar un control a la vez
+        seleccionUnaVez = new ToggleGroup();
+        arbolBST.setToggleGroup(seleccionUnaVez);
+        arbolAVL.setToggleGroup(seleccionUnaVez);
     }
 
     private void drawTree() {
