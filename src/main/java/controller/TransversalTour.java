@@ -38,6 +38,8 @@ public class TransversalTour {
 
     private static final int NODE_RADIUS = 20;
     private static final int VERTICAL_GAP = 100;
+    @FXML
+    private Text textRecorrido;
 
     @FXML
     public void initialize() {
@@ -108,6 +110,7 @@ public class TransversalTour {
             }
             drawTree();
         }
+
     }
 
     @FXML
@@ -121,6 +124,12 @@ public class TransversalTour {
             drawTreeRecursivelyPreOrder(bst.getRoot(), paneWidth / 2, 2 * NODE_RADIUS, paneWidth / 4, counter);
         } else if (arbolAVL.isSelected()) {
             drawTreeRecursivelyPreOrder(avlbst.getRoot(), paneWidth / 2, 2 * NODE_RADIUS, paneWidth / 4, counter);
+        }
+
+        if (arbolBST.isSelected()){
+            textRecorrido.setText("BST Pre Order Transversal Tour (N-L-R)");
+        }else if (arbolAVL.isSelected()){
+            textRecorrido.setText("AVl Pre Order Transversal Tour (N-L-R)");
         }
     }
 
@@ -172,6 +181,12 @@ public class TransversalTour {
             } else if (arbolAVL.isSelected()) {
                 drawTreeRecursivelyPostOrder(avlbst.getRoot(), paneWidth / 2, 2 * NODE_RADIUS, paneWidth / 4, counter);
             }
+
+            if (arbolBST.isSelected()){
+                textRecorrido.setText("BST Post Order Transversal Tour (L-R-N)");
+            }else if (arbolAVL.isSelected()){
+                textRecorrido.setText("AVl Post Order Transversal Tour (L-R-N)");
+            }
         }
     }
 
@@ -221,6 +236,12 @@ public class TransversalTour {
                 drawTreeRecursivelyInOrder(bst.getRoot(), paneWidth / 2, 2 * NODE_RADIUS, paneWidth / 4, counter);
             } else if (arbolAVL.isSelected()) {
                 drawTreeRecursivelyInOrder(avlbst.getRoot(), paneWidth / 2, 2 * NODE_RADIUS, paneWidth / 4, counter);
+            }
+
+            if (arbolBST.isSelected()){
+                textRecorrido.setText("BST In Order Transversal Tour (L-N-R)");
+            }else if (arbolAVL.isSelected()){
+                textRecorrido.setText("AVl In Order Transversal Tour (L-N-R)");
             }
         }
     }

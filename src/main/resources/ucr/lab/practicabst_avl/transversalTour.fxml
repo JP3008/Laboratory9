@@ -63,22 +63,22 @@
                      </color>
                   </InnerShadow>
                </effect></Button>
-            <RadioButton fx:id="arbolBST" layoutX="33.0" layoutY="102.0" mnemonicParsing="false" text="Árbol BST">
+            <RadioButton fx:id="arbolBST" layoutX="33.0" layoutY="112.0" mnemonicParsing="false" text="Árbol BST">
                <font>
                   <Font name="Century Gothic" size="19.0" />
                </font></RadioButton>
-            <RadioButton fx:id="arbolAVL" layoutX="231.0" layoutY="102.0" mnemonicParsing="false" text="Árbol AVL">
+            <RadioButton fx:id="arbolAVL" layoutX="231.0" layoutY="115.0" mnemonicParsing="false" text="Árbol AVL">
                <font>
                   <Font name="Century Gothic" size="19.0" />
                </font>
             </RadioButton>
             <TextField fx:id="textFieldArbolBST" layoutX="912.0" layoutY="23.0" prefHeight="25.0" prefWidth="246.0" style="-fx-background-color: transparent;" />
             <TextField fx:id="textFieldArbolAVL" layoutX="33.0" layoutY="67.0" prefHeight="25.0" prefWidth="246.0" style="-fx-background-color: transparent;" />
-            <TextField layoutX="30.0" layoutY="58.0" prefHeight="38.0" prefWidth="375.0" style="-fx-background-color: transparent;">
+            <Text fx:id="textRecorrido" fill="#910000" layoutX="58.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="705.6708679199219">
                <font>
-                  <Font name="Century Gothic" size="18.0" />
+                  <Font name="Century Gothic" size="25.0" />
                </font>
-            </TextField>
+            </Text>
          </children>
       </Pane>
    </children>
