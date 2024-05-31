@@ -1,7 +1,7 @@
 package controller;
 
-import Util.Utility;
-import domain.AVLBST;
+import util.Utility;
+import domain.AVL;
 import domain.BST;
 import domain.BTreeNode;
 import domain.TreeException;
@@ -22,7 +22,7 @@ public class TransversalTour {
     private Pane pane;
 
     private BST bst;
-    private AVLBST avlbst;
+    private AVL avlbst;
 
     private Alert alert = new Alert(Alert.AlertType.ERROR);
     @FXML
@@ -103,7 +103,7 @@ public class TransversalTour {
             }
             drawTree();
         } else if (arbolAVL.isSelected()) {
-            avlbst = new AVLBST();
+            avlbst = new AVL();
             int numberOfNodes = Utility.getRandom(24);
             for (int i = 0; i < numberOfNodes; i++) {
                 avlbst.add(Utility.getRandom(100)); // Usando valores aleatorios entre 0 y 99

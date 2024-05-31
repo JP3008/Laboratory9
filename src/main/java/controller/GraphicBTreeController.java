@@ -239,15 +239,26 @@ public class GraphicBTreeController {
 
     @FXML
     public void tour(ActionEvent actionEvent) throws TreeException {
-        if (avlbst.isEmpty()){
+        if ((avlbst == null || avlbst.isEmpty()) && (bst == null || bst.isEmpty())){
             alert.setContentText("The tree is empty");
             alert.showAndWait();
-        }else{
-            Alert alertTreeTour = new Alert(Alert.AlertType.INFORMATION);
-            alertTreeTour.setContentText(avlbst.toString());
-            alertTreeTour.showAndWait();
+        } else {
+            if (arbolBST.isSelected() && bst != null){
+                Alert alertTreeTour = new Alert(Alert.AlertType.INFORMATION);
+                alertTreeTour.setContentText(bst.toString());
+                alertTreeTour.showAndWait();
+            } else if (arbolAVL.isSelected() && avlbst != null){
+                Alert alertTreeTour = new Alert(Alert.AlertType.INFORMATION);
+                alertTreeTour.setContentText(avlbst.toString());
+                alertTreeTour.showAndWait();
+            } else {
+                Alert alertTreeTour = new Alert(Alert.AlertType.INFORMATION);
+                alertTreeTour.setContentText("No option selected");
+                alertTreeTour.showAndWait();
+            }
         }
     }
+
 
     private static final int NODE_RADIUS = 20;
     private static final int VERTICAL_GAP = 100;

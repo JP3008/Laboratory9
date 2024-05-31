@@ -308,6 +308,16 @@ public class BST implements Tree {
     }
 
     protected boolean isBalanced(BTreeNode node) {
-        return Math.abs((height(node.left)) - height(node.right)) <= 1;
+        if (node == null) {
+            return true;
+        }
+
+        int leftHeight = height(node.left);
+        int rightHeight = height(node.right);
+
+        if (Math.abs(leftHeight - rightHeight) > 1) {
+            return false;
+        }
+        return isBalanced(node.left) && isBalanced(node.right);
     }
 }

@@ -1,7 +1,7 @@
 package controller;
 
-import Util.Utility;
-import domain.AVLBST;
+import util.Utility;
+import domain.AVL;
 import domain.BST;
 import domain.BTreeNode;
 import domain.TreeException;
@@ -26,54 +26,47 @@ public class GraphicOperations
     private RadioButton radioBST;
     @javafx.fxml.FXML
     private RadioButton radioAVL;
-    public BST bst = new BST();
-    public AVLBST avl = new AVLBST();
+    public BST bst;
+    public AVL avl;
     private Alert alert = new Alert(Alert.AlertType.INFORMATION);
     @javafx.fxml.FXML
     private Label lbBalance;
 
     @FXML
     public void initialize() throws TreeException {
-        generateInitialTree(); // Generar y dibujar el árbol inicial
+        bst = new BST();
+        avl = new AVL();
+
 
         // Agregar un listener para dibujar el árbol cuando el pane cambie de tamaño
         pane.widthProperty().addListener((obs, oldVal, newVal) -> drawTree());
         pane.heightProperty().addListener((obs, oldVal, newVal) -> drawTree());
     }
-
-    private void generateInitialTree() throws TreeException {
-        int numberOfNodes = Utility.getRandom(5);
-        for (int i = 0; i < numberOfNodes; i++) {
-            bst.add(Utility.getRandom(100)); // Usando valores aleatorios entre 0 y 99
-        }
-        drawTree();
-    }
-
     @FXML
     public void RandomizeButton() throws TreeException {
+        bst = new BST();
+        avl = new AVL();
         if (radioBST.isSelected()) {
+            lbBalance.setText("");
             for (int i = 0; i < 19; i++) {
                 bst.add(Utility.getRandom(100)); // Usando valores aleatorios entre 0 y 99
             }
-            /*
-            if (bst.isBalanced(bst.getRoot())){
+            if (bst.isBalanced()){
                 lbBalance.setText("BTS is balanced!!!");
             }else{
                 lbBalance.setText("BTS is not balanced!!!");
             }
-             */
             drawTree();
         }else if (radioAVL.isSelected()) {
+            lbBalance.setText("");
             for (int i = 0; i < 19; i++) {
                 avl.add(Utility.getRandom(100)); // Usando valores aleatorios entre 0 y 99
             }
-            /*
-            if (avl.isBalanced(avl.getRoot())){
+            if (avl.isBalanced()){
                 lbBalance.setText("AVL is balanced!!!");
             }else{
                 lbBalance.setText("AVL is not balanced!!!");
             }
-             */
             drawTree();
         }else{
             alert.setContentText("No option selected");
@@ -176,6 +169,10 @@ public class GraphicOperations
 
     @javafx.fxml.FXML
     public void nodeHeightOnAction(ActionEvent actionEvent) {
+        if (bst.isEmpty() && avl.isEmpty()){
+            alert.setContentText("No option selected");
+            alert.showAndWait();
+        }else {
             TextInputDialog dialog = new TextInputDialog();
             dialog.setTitle("Height Node");
             dialog.setHeaderText("Enter the element to search the height:");
@@ -218,73 +215,173 @@ public class GraphicOperations
                         alert.setContentText("No option selected");
                         alert.showAndWait();
                     }
-                }catch (NumberFormatException nfe){
+                } catch (NumberFormatException nfe) {
                     alert.setContentText("Didn't enter a number");
                     alert.showAndWait();
                 }
             }
+        }
     }
 
     @javafx.fxml.FXML
-    public void removeOnAction(ActionEvent actionEvent) {
-    }
-
-    @javafx.fxml.FXML
-    public void addOnAction(ActionEvent actionEvent) {
-    }
-
-    @javafx.fxml.FXML
-    public void containsOnAction(ActionEvent actionEvent) {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Height Node");
-        dialog.setHeaderText("Enter the element to search the height:");
-        dialog.setContentText("Element:");
-        String result = dialog.showAndWait().orElse(null);
-        if (result == null) {
-            alert.setContentText("Nothing was entered");
+    public void removeOnAction(ActionEvent actionEvent) throws TreeException {
+        if (bst.isEmpty() && avl.isEmpty()){
+            alert.setContentText("No option selected");
             alert.showAndWait();
-        } else {
-            try {
-                int element = Integer.parseInt(result);
+        }else{
                 if (radioBST.isSelected()) {
+                    lbBalance.setText("");
+                    int eliminateValueBTS;
                     try {
-                        if (bst.contains(element)) {
-                            alert.setContentText("The element " + element + " is contained in the tree");
-                            alert.showAndWait();
-                        } else {
-                            alert.setContentText("The element " + element + " is  not contained in the tree");
-                            alert.showAndWait();
-                        }
+                        do {
+                            eliminateValueBTS = util.Utility.getRandom(100);
+                        } while (!bst.contains(eliminateValueBTS));
+                        bst.remove(eliminateValueBTS);
+                        drawTree();
                     } catch (TreeException e) {
-                        alert.setContentText("The tree is Empty");
+                        alert.setContentText("The tree BTS is empty");
                         alert.showAndWait();
                     }
+                    if (bst.isBalanced()) {
+                        lbBalance.setText("BTS is balanced!!!");
+                    } else {
+                        lbBalance.setText("BTS is not balanced!!!");
+                    }
+                    drawTree();
                 } else if (radioAVL.isSelected()) {
+                    lbBalance.setText("");
+                    int eliminateValueAVL;
                     try {
-                        if (avl.contains(element)) {
-                            alert.setContentText("The element " + element + " is contained in the tree");
-                            alert.showAndWait();
-                        } else {
-                            alert.setContentText("The element " + element + " is  not contained in the tree");
-                            alert.showAndWait();
-                        }
+                        do {
+                            eliminateValueAVL = util.Utility.getRandom(100);
+                        } while (avl.contains(eliminateValueAVL));
+                        avl.remove(eliminateValueAVL);
+                        drawTree();
                     } catch (TreeException e) {
-                        alert.setContentText("The tree is Empty");
+                        alert.setContentText("The tree AVL is empty");
                         alert.showAndWait();
                     }
+                    if (avl.isBalanced()) {
+                        lbBalance.setText("AVL is balanced!!!");
+                    } else {
+                        lbBalance.setText("AVL is not balanced!!!");
+                    }
+                    drawTree();
                 } else {
                     alert.setContentText("No option selected");
                     alert.showAndWait();
                 }
-            }catch (NumberFormatException nfe){
-                alert.setContentText("Didn't enter a number");
+        }
+    }
+
+    @javafx.fxml.FXML
+    public void addOnAction(ActionEvent actionEvent) {
+        if (radioBST.isSelected()) {
+            lbBalance.setText("");
+            bst.add(Utility.getRandom(100));
+            if (bst.isBalanced()){
+                lbBalance.setText("BTS is balanced!!!");
+            }else{
+                lbBalance.setText("BTS is not balanced!!!");
+            }
+            drawTree();
+        }else if (radioAVL.isSelected()) {
+            lbBalance.setText("");
+            avl.add(Utility.getRandom(100));
+            if (avl.isBalanced()){
+                lbBalance.setText("AVL is balanced!!!");
+            }else{
+                lbBalance.setText("AVL is not balanced!!!");
+            }
+            drawTree();
+        }else{
+            alert.setContentText("No option selected");
+            alert.showAndWait();
+        }
+    }
+
+    @javafx.fxml.FXML
+    public void containsOnAction(ActionEvent actionEvent) {
+        if (bst.isEmpty() && avl.isEmpty()){
+            alert.setContentText("No option selected");
+            alert.showAndWait();
+        }else {
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Height Node");
+            dialog.setHeaderText("Enter the element to search the height:");
+            dialog.setContentText("Element:");
+            String result = dialog.showAndWait().orElse(null);
+            if (result == null) {
+                alert.setContentText("Nothing was entered");
                 alert.showAndWait();
+            } else {
+                try {
+                    int element = Integer.parseInt(result);
+                    if (radioBST.isSelected()) {
+                        try {
+                            if (bst.contains(element)) {
+                                alert.setContentText("The element " + element + " is contained in the tree");
+                                alert.showAndWait();
+                            } else {
+                                alert.setContentText("The element " + element + " is  not contained in the tree");
+                                alert.showAndWait();
+                            }
+                        } catch (TreeException e) {
+                            alert.setContentText("The tree is Empty");
+                            alert.showAndWait();
+                        }
+                    } else if (radioAVL.isSelected()) {
+                        try {
+                            if (avl.contains(element)) {
+                                alert.setContentText("The element " + element + " is contained in the tree");
+                                alert.showAndWait();
+                            } else {
+                                alert.setContentText("The element " + element + " is  not contained in the tree");
+                                alert.showAndWait();
+                            }
+                        } catch (TreeException e) {
+                            alert.setContentText("The tree is Empty");
+                            alert.showAndWait();
+                        }
+                    } else {
+                        alert.setContentText("No option selected");
+                        alert.showAndWait();
+                    }
+                } catch (NumberFormatException nfe) {
+                    alert.setContentText("Didn't enter a number");
+                    alert.showAndWait();
+                }
             }
         }
     }
 
     @javafx.fxml.FXML
     public void treeHeightOnAction(ActionEvent actionEvent) {
+        if (bst.isEmpty() && avl.isEmpty()){
+            alert.setContentText("No option selected");
+            alert.showAndWait();
+        }else {
+            if (radioBST.isSelected()) {
+                try {
+                    alert.setContentText("The height of the tree BTS is " + bst.height());
+                    alert.showAndWait();
+                } catch (TreeException e) {
+                    alert.setContentText("Problem in processing");
+                    alert.showAndWait();
+                }
+            } else if (radioAVL.isSelected()) {
+                try {
+                    alert.setContentText("The height of the tree AVL is " + avl.height());
+                    alert.showAndWait();
+                } catch (TreeException e) {
+                    alert.setContentText("Problem in processing");
+                    alert.showAndWait();
+                }
+            } else {
+                alert.setContentText("No option selected");
+                alert.showAndWait();
+            }
+        }
     }
 
     @FXML
