@@ -29,7 +29,7 @@ public class AVL implements Tree {
 
     private int size(BTreeNode node){
         if(node==null)
-            return -1;
+            return 0;
         else
             return 1+size(node.left)+size(node.right);
     }
@@ -66,7 +66,7 @@ public class AVL implements Tree {
 
     @Override
     public void add(Object element) {
-        this.root = add(root, element, "root");
+        this.root = add(root, element, " added as ");
     }
 
     private BTreeNode add(BTreeNode node, Object element, String sequence) {
@@ -91,20 +91,20 @@ public class AVL implements Tree {
 
         // Casos de rotación
         if (balance > 1 && Utility.compare(element, node.left.data) < 0) {
-            node.path += ". Singly Right Rotation";
+            node.path += ". Singly Right Rotation ";
             return rightRotate(node);
         }
         if (balance < -1 && Utility.compare(element, node.right.data) > 0) {
-            node.path += ". Singly Left Rotation";
+            node.path += ". Singly Left Rotation ";
             return leftRotate(node);
         }
         if (balance > 1 && Utility.compare(element, node.left.data) > 0) {
-            node.path += ". Double Left/Right Rotation";
+            node.path += ". Double Left/Right Rotation ";
             node.left = leftRotate(node.left);
             return rightRotate(node);
         }
         if (balance < -1 && Utility.compare(element, node.right.data) < 0) {
-            node.path += ". Double Right/Left Rotation";
+            node.path += ". Double Right/Left Rotation ";
             node.right = rightRotate(node.right);
             return leftRotate(node);
         }
@@ -369,10 +369,27 @@ public class AVL implements Tree {
         return result;
     }
 
-    public String getSequence() {
-        return getInternalSequence(root);
+    public String getSequence() throws TreeException {
+        if (isEmpty()){
+            throw new TreeException("AVL tree is empty");
+        }
+
+        return getSequence(root);
+
     }
-    private String getInternalSequence(BTreeNode node){
+
+    private String getSequence(BTreeNode node) {
+        String result="";
+        if(node!=null){
+            result =  node.data + " "+ node.path + "\n";
+            result += getSequence(node.left);
+            result += getSequence(node.right);
+        }
+        return result;
+
+
+    }
+   /* private String getInternalSequence(BTreeNode node){
         String result="";
         if(node!=null){
             result =  node.data + " "+ node.path + "\n";
@@ -389,7 +406,7 @@ public class AVL implements Tree {
         }
         return getInternalSequence(currentNode);
     }
-
+*/
     private BTreeNode getNodeByValue(Object element, BTreeNode node){
         if(element==null)
             return null;

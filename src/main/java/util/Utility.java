@@ -1,7 +1,10 @@
 package util;
 
+import domain.AVL;
+import domain.BST;
 import domain.BTree;
 
+import java.util.IllegalFormatCodePointException;
 import java.util.Random;
 
 public class Utility {
@@ -59,6 +62,12 @@ public class Utility {
             case "Btree":
                 BTree b1 = (BTree) a; BTree b2 = (BTree) b;
                 return b1.toString().compareTo(b2.toString())<0? -1 : b1.toString().compareTo(b2.toString())>0 ? 1 : 0;
+            case "BST":
+                BST bst1 = (BST) a; BST bst2 = (BST) b;
+                return bst1.toString().compareTo(bst2.toString())<0? -1 : bst1.toString().compareTo(bst2.toString())>0 ? 1 : 0;
+            case "AVL":
+                AVL avl1 = (AVL) a; AVL avl2 = (AVL) b;
+                return avl1.toString().compareTo(avl2.toString())<0? -1 : avl1.toString().compareTo(avl2.toString())>0 ? 1 : 0;
         }
         return 2; //Unknown
     }
@@ -68,6 +77,8 @@ public class Utility {
         if(a instanceof String && b instanceof String) return "String";
         if(a instanceof Character && b instanceof Character) return "Character";
         if(a instanceof BTree && b instanceof BTree) return "Btree";
+        if (a instanceof BST && b instanceof BST) return "BST";
+        if (a instanceof AVL && b instanceof AVL) return "AVL";
         return "Unknown";
     }
 }

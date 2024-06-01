@@ -62,6 +62,7 @@ public class BST implements Tree {
     @Override
     public void add(Object element) {
         this.root = add(root, element);
+        updateHeight(root);
     }
 
     private BTreeNode add(BTreeNode node, Object element) {
@@ -75,6 +76,7 @@ public class BST implements Tree {
             else if (util.Utility.compare(element, node.data) > 0)// si es impar inserte por la der
                 node.right = add(node.right, element);
         }
+        node.height = Math.max(getHeight(node.left),getHeight(node.right))+1;
         return node;
     }
 
@@ -83,6 +85,9 @@ public class BST implements Tree {
         if(isEmpty())
             throw new TreeException("Binary Search Tree is empty");
         root = remove(root,element);
+        updateHeight(root);
+
+
     }
 
     private BTreeNode remove(BTreeNode node, Object element){
@@ -116,6 +121,7 @@ public class BST implements Tree {
 
             }
         }
+        node.height = Math.max(getHeight(node.left),getHeight(node.right))+1;
         return node;
     }
 
@@ -160,6 +166,23 @@ public class BST implements Tree {
             return height(node.left, element, ++counter);
         else return height(node.right, element, ++counter);
         //else return Math.max(height(node.left, element, ++counter), height(node.right, element, counter));
+    }
+
+    private int updateHeight(BTreeNode node) {
+        if (node == null) {
+            return -1;
+        }
+
+        int leftHeight = updateHeight(node.left);
+        int rightHeight = updateHeight(node.right);
+
+        if (node.left == null && node.right == null) {
+            node.height = 0; // Leaf node height is 0
+        } else {
+            node.height = Math.max(leftHeight, rightHeight) + 1;
+        }
+
+        return node.height;
     }
 
     @Override
@@ -246,6 +269,8 @@ public class BST implements Tree {
         return postOrder(root) + "\n";
     }
 
+
+
     //left-right-node
     private String postOrder(BTreeNode node){
         String result="";
@@ -289,6 +314,32 @@ public class BST implements Tree {
         return -1;
     }
 
+    public String getListHeight() throws TreeException{
+        if (isEmpty())
+            throw new TreeException("is empty");
+
+        return preorderHeight(root);
+    }
+
+    private String preorderHeight(BTreeNode node) throws TreeException {
+        String result="";
+        if(node!=null){
+            int height = height(node.data);
+            result =  node.data + " (Height "+height+") ";
+            result += preorderHeight(node.left);
+            result += preorderHeight(node.right);
+        }
+        return result;
+    }
+
+    private int getHeight(BTreeNode node) {
+        if (node == null)
+            return 0;
+        return node.height;
+    }
+
+
+
     //preOrder: recorre el árbol de la forma: nodo-izq-der
     //inOrder: recorre el árbol de la forma: izq-nodo-der
     //postOrder: recorre el árbol de la forma: izq-der-nodo
@@ -297,6 +348,16 @@ public class BST implements Tree {
         if(isEmpty())
             return "Binary Search Tree is empty";
         String result = "BINARY SEARCH TREE TOUR...\n";
+        result+="PreOrder: "+preOrder(root)+"\n";
+        result+="InOrder: "+inOrder(root)+"\n";
+        result+="PostOrder: "+postOrder(root)+"\n";
+        return result;
+    }
+
+    public String toString(String title) {
+        if(isEmpty())
+            return "Binary Search Tree is empty";
+        String result = title+"...\n";
         result+="PreOrder: "+preOrder(root)+"\n";
         result+="InOrder: "+inOrder(root)+"\n";
         result+="PostOrder: "+postOrder(root)+"\n";
