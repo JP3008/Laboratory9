@@ -245,17 +245,16 @@ public class GraphicOperations
                             eliminateValueBTS = util.Utility.getRandom(100);
                         } while (!bst.contains(eliminateValueBTS));
                         bst.remove(eliminateValueBTS);
+                        if (bst.isBalanced()) {
+                            lbBalance.setText("BTS is balanced!!!");
+                        } else {
+                            lbBalance.setText("BTS is not balanced!!!");
+                        }
                         drawTree();
                     } catch (TreeException e) {
                         alert.setContentText("The tree BTS is empty");
                         alert.showAndWait();
                     }
-                    if (bst.isBalanced()) {
-                        lbBalance.setText("BTS is balanced!!!");
-                    } else {
-                        lbBalance.setText("BTS is not balanced!!!");
-                    }
-                    drawTree();
                 } else if (radioAVL.isSelected()) {
                     lbBalance.setText("");
                     int eliminateValueAVL;
@@ -265,17 +264,16 @@ public class GraphicOperations
                             eliminateValueAVL = util.Utility.getRandom(100);
                         }
                         avl.remove(eliminateValueAVL);
+                        if (avl.isBalanced()) {
+                            lbBalance.setText("AVL is balanced!!!");
+                        } else {
+                            lbBalance.setText("AVL is not balanced!!!");
+                        }
                         drawTree();
                     } catch (TreeException e) {
                         alert.setContentText("The tree AVL is empty");
                         alert.showAndWait();
                     }
-                    if (avl.isBalanced()) {
-                        lbBalance.setText("AVL is balanced!!!");
-                    } else {
-                        lbBalance.setText("AVL is not balanced!!!");
-                    }
-                    drawTree();
                 } else {
                     alert.setContentText("No option selected");
                     alert.showAndWait();
