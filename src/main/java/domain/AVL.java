@@ -425,4 +425,75 @@ public class AVL implements Tree {
     protected boolean isBalanced(BTreeNode node) {
         return Math.abs((height(node.left)) - height(node.right)) <= 1;
     }
+
+    private boolean contains(BTreeNode node, Object element) {
+        if (node == null) {
+            return false;
+        }
+
+        if (Utility.compare(node.data, element) == 0) {
+            return true;
+        }
+
+        return contains(node.left, element) || contains(node.right, element);
+    }
+
+    public String hasPath(Object data1, Object data2) throws TreeException {
+        if (isEmpty()) {
+            throw new TreeException("The tree is empty");
+        }
+
+        if (!contains(root, data1) || !contains(root, data2)) {
+            if (!contains(root, data1)) {
+                return "Wrong element: " + data1;
+            }
+            if (!contains(root, data2)) {
+                return "Wrong element: " + data2;
+            }
+        }
+
+        String path = hasPath(this.root, data1, data2);
+        if (path.isEmpty()) {
+            return "Wrong path";
+        }
+        return "hashPath(" + data1 + ", " + data2 + ") " + path;
+    }
+
+    private String hasPath(BTreeNode node, Object data1, Object data2) {
+        if (node == null) {
+            return "";
+        }
+
+        // Buscar el camino desde data1 hasta data2
+        if (Utility.compare(node.data, data1) == 0 || Utility.compare(node.data, data2) == 0) {
+            String leftPath = hasPath(node.left, data1, data2);
+            String rightPath = hasPath(node.right, data1, data2);
+
+            if (!leftPath.isEmpty() && !rightPath.isEmpty()) {
+                return node.data + "," + leftPath + "," + rightPath;
+            } else if (!leftPath.isEmpty()) {
+                return node.data + "," + leftPath;
+            } else if (!rightPath.isEmpty()) {
+                return node.data + "," + rightPath;
+            } else {
+                return node.data.toString();
+            }
+        }
+
+
+        String leftPath = hasPath(node.left, data1, data2);
+        String rightPath = hasPath(node.right, data1, data2);
+
+        if (!leftPath.isEmpty() && !rightPath.isEmpty()) {
+            return node.data + "," + leftPath + "," + rightPath;
+        } else if (!leftPath.isEmpty()) {
+            return node.data + "," + leftPath;
+        } else if (!rightPath.isEmpty()) {
+            return node.data + "," + rightPath;
+        }
+
+        return "";
+    }
+
+
 }
